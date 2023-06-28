@@ -1,0 +1,79 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Movies{
+  id            Int @id @default(autoincrement())
+  title         String 
+  description   String?
+  rating        Int?
+  release_date  String?
+  poster        String
+  price         Int
+  movie_format  String
+  transaction   Transactions[]
+  showtime      Showtimes[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model Users{
+  id            String @id
+  name          String
+  username      String @unique
+  password      String
+  age           Int?
+  balance       Int?
+  role          String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  transaction   Transactions[]
+}
+
+model Showtimes{
+  id          String @id
+  date        DateTime
+  seats       Json
+  studios     Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  movies      Movies @relation(fields: [movieId], references: [id])
+  movieId     Int
+  transaction Transactions[]
+}
+
+model Ticket{
+  id          String @id
+  ticketCode  String 
+  seat        Int
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  transactions Transactions @relation(fields: [transactionsId], references: [id] )
+  transactionsId String
+}
+
+model Transactions{
+  id          String @id
+  transactionCode String 
+  totalcost   Int
+  booked_seat String
+  status      String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  ticket      Ticket[]
+  user        Users @relation(fields: [userId], references: [id])
+  userId      String
+  movie       Movies @relation(fields: [movieId], references: [id]) 
+  movieId     Int
+  showtime    Showtimes @relation(fields: [showTimeId], references: [id])
+  showTimeId  String
+}
+
