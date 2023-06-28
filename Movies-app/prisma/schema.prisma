@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Movies{
-  id            Int @id @default(autoincrement())
+  id            Int @id 
   title         String 
   description   String?
   rating        Int?
@@ -19,6 +19,10 @@ model Movies{
   poster        String
   price         Int
   movie_format  String
+  duration      Int
+  subtitle      String?
+  director      String?
+  genre         String?  
   transaction   Transactions[]
   showtime      Showtimes[]
   createdAt     DateTime @default(now())
@@ -36,6 +40,7 @@ model Users{
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   transaction   Transactions[]
+  ticket        Ticket[]
 }
 
 model Showtimes{
@@ -43,6 +48,7 @@ model Showtimes{
   date        DateTime
   seats       Json
   studios     Int
+  startAt     String? 
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   movies      Movies @relation(fields: [movieId], references: [id])
@@ -58,6 +64,8 @@ model Ticket{
   updatedAt   DateTime @updatedAt
   transactions Transactions @relation(fields: [transactionsId], references: [id] )
   transactionsId String
+  users        Users  @relation(fields: [usersId], references: [id])
+  usersId     String
 }
 
 model Transactions{

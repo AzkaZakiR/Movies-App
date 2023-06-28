@@ -1,0 +1,4 @@
+# Ignore Node modules
+/Movies-app/node_modules/
+
+#$ git remote add origin https://github.com/AzkaZakiR/Movies-App.git
