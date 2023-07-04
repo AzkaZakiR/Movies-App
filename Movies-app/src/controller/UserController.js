@@ -12,13 +12,9 @@ export const registerUser = async(req, res) => {
     console.log(req.body);
     const {name,  username, password, confPassword, age, role} = req.body;
     const checkUsername = await prisma.users.findUnique({
-        where: {
-            username: username 
-        }
-    })
+        where: { username: username } })
     if(username == checkUsername) {
-        return res.status(400).json({msg: "username sudah ada"});
-    }
+        return res.status(400).json({msg: "username sudah ada"});}
     if(password !== confPassword) return res.status(400).json({msg: "Password dan Confirm Password tidak cocok"});
     const hashPass = bcrypt.hashSync(password, saltRound);
     let uid, roles;
@@ -83,6 +79,7 @@ export const loginUser = async(req, res,) => {
                 roles: existingUser.role,
                 accessToken: token,
             }});
+        console.log("Login successful")
     } catch (error) {
         console.log(error);
         res.status(400).json({msg: error.message});
