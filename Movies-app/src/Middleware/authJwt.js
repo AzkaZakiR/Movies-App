@@ -6,7 +6,8 @@ import secretKey from "./config.js";
 console.log(secretKey);
 
 export const verifyToken = (req, res, next) => {
-    let token = req.headers["x-access-token"];
+    let token =
+     req.body.token || req.query.token || req.headers["x-access-token"] || req.headers["authorization"];
 
     if(!token) {
         return res.status(403).send({
@@ -21,6 +22,7 @@ export const verifyToken = (req, res, next) => {
             });
         }
         req.userId = decoded.id
+        console.log(req.userId);
         next()
     })
 }

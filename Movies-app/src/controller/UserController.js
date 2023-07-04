@@ -88,3 +88,13 @@ export const loginUser = async(req, res,) => {
         res.status(400).json({msg: error.message});
     }
 }
+
+export const allAccess = async(req, res) => {
+    res.status(200).send("Public access")
+}
+export const userAccess = async(req, res) => {
+    res.status(200).send("user access")
+}
+export const adminAccess = async(req, res) => {
+    res.status(200).send("admin access")
+}

@@ -8,7 +8,7 @@ export const getAllMovies = async(req, res) => {
         const movies = await prisma.movies.findMany();
         res.status(200).json({response:movies})
     } catch (error) {
-        res.status(500).json({msg: e.message})
+        res.status(500).json({msg: error.message})
     }
 }
 
@@ -24,7 +24,7 @@ export const getMovie = async(req, res) => {
     } catch (error) {
         res.status(500).json({msg:error})
     }
-}
+} 
 
 export const getMovieSchedule = async(req, res) => {
     try {

@@ -23,7 +23,6 @@ model Movies{
   subtitle      String?
   director      String?
   genre         String?  
-  transaction   Transactions[]
   showtime      Showtimes[]
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
@@ -63,13 +62,13 @@ model Ticket{
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   transactions Transactions @relation(fields: [transactionsId], references: [id] )
-  transactionsId String
+  transactionsId Int
   users        Users  @relation(fields: [usersId], references: [id])
   usersId     String
 }
 
 model Transactions{
-  id          String @id
+  id          Int @id @default(autoincrement())
   transactionCode String 
   totalcost   Int
   booked_seat String
@@ -79,8 +78,6 @@ model Transactions{
   ticket      Ticket[]
   user        Users @relation(fields: [userId], references: [id])
   userId      String
-  movie       Movies @relation(fields: [movieId], references: [id]) 
-  movieId     Int
   showtime    Showtimes @relation(fields: [showTimeId], references: [id])
   showTimeId  String
 }
