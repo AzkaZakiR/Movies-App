@@ -29,12 +29,12 @@ export const getMovie = async(req, res) => {
 export const getMovieSchedule = async(req, res) => {
     try {
         const movieId = req.params.id;
-        const movies = await prisma.showtimes.findMany({
+        const schedule = await prisma.showtimes.findMany({
             where: {
                 movieId: Number(movieId)
             }
         });
-        res.status(200).json({response:movies});
+        res.status(200).json({response:schedule});
     } catch (error) {
         res.status(500).json({msg:error})
     }

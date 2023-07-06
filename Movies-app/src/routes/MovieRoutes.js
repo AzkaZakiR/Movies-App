@@ -3,7 +3,7 @@ import {getMovie, getAllMovies, getMovieByDate, getMovieSchedule } from "../cont
 import { createShowtimes, deleteSchedule } from "../controller/ShowtimesController.js";
 import { registerUser, loginUser, allAccess, userAccess  } from "../controller/UserController.js";
 import { verifyToken } from "../Middleware/authJwt.js";
-import { createTransactions } from "../controller/TransactionsController.js";
+import { createTransactions, cancelTransactions, transactionHistory } from "../controller/TransactionsController.js";
 
 const router = express.Router()
 
@@ -20,7 +20,9 @@ router.post('/login', loginUser);
 // router.post('/movies/date/booking/:id', createTransactions)
 router.post('/movies/date/booking',[verifyToken], createTransactions)
 router.use("/all", allAccess);
-router.use("/user", [verifyToken], userAccess);
+// router.use("/user", [verifyToken], userAccess);
+router.get('/user/history', [verifyToken], transactionHistory);
+router.post('/user/:id', [verifyToken], cancelTransactions);
 //router.post
 //app.get("/api/test/user", [authJwt.verifyToken], controller.userBoard);
   

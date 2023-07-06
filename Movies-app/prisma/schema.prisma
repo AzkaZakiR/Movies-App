@@ -13,7 +13,7 @@ datasource db {
 model Movies{
   id            Int @id 
   title         String 
-  description   String?
+  description   String @db.Text
   rating        Int?
   release_date  String?
   poster        String

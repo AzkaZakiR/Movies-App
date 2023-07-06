@@ -7,10 +7,16 @@ const prisma = new PrismaClient();
 async function main(){
     for (let movie of movies) {
         await prisma.movies.create({
-            data: movie})}}
+            data: movie})}
+    for (let show of showTimesdata) {
+        await prisma.showtimes.create({
+            data: show 
+        });
+    }
+        }
 
 
-async function main(){
+async function utama(){
         for (let show of showTimesdata) {
             await prisma.showtimes.create({
                 data: show 
