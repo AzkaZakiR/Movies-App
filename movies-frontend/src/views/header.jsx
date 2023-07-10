@@ -1,11 +1,9 @@
-import React, {useState} from 'react';
-import { Link } from 'react-router-dom';
-import { FaHome } from 'react-icons/fa';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { FaHome } from "react-icons/fa";
 import { TbMovie } from "react-icons/tb";
 
-
 const HeaderTop = () => {
-
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
@@ -16,21 +14,17 @@ const HeaderTop = () => {
       <nav className="container flex justify-between items-center">
         <div className="flex-grow">
           <a href="/home" className="text-white text-2xl flex items-center justify-center">
-          <TbMovie/>
+            <TbMovie size={40} />
             SEA CINEMA
           </a>
         </div>
         <div>
           <ul className="flex space-x-4">
             <li className="mx-6">
-              <a  className="text-white">
-                Upcoming
-              </a>
+              <a className="text-white">Upcoming</a>
             </li>
             <li className="mx-6">
-              <a className="text-white">
-                Schedule
-              </a>
+              <a className="text-white">Schedule</a>
             </li>
             <li>
               <a href="/login" className="text-white">
@@ -43,34 +37,34 @@ const HeaderTop = () => {
               </a>
             </li>
             <li>
-            <div className="relative">
-      <button className="flex items-center text-white focus:outline-none" onClick={toggleDropdown}>
-        <span className="mr-2">My Account</span>
-        <svg className={`h-5 w-5 ${isDropdownOpen ? 'transform rotate-180' : ''} `} viewBox="0 0 20 20" fill="currentColor">
-          <path fillRule="evenodd" d="M6 8a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm0 4a1 1 0 011-1h6a1 1 0  2H7a1 1 0 01-1-1zm0 4a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1z" clipRule="evenodd" />
-        </svg>
-      </button>
+              <div className="relative">
+                <button className="flex items-center text-white focus:outline-none" onClick={toggleDropdown}>
+                  <span className="mr-2">My Account</span>
+                  <svg className={`h-5 w-5 ${isDropdownOpen ? "transform rotate-180" : ""} `} viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M6 8a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm0 4a1 1 0 011-1h6a1 1 0  2H7a1 1 0 01-1-1zm0 4a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1z" clipRule="evenodd" />
+                  </svg>
+                </button>
 
-      {isDropdownOpen && (
-        <ul className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-md">
-          <li>
-            <a href="/transactions" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">
-              Transactions
-            </a>
-          </li>
-          <li>
-            <a href="/history" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">
-              History
-            </a>
-          </li>
-          <li>
-            <a href="/details" className="block px-4 py-2 text-gray-800 hover:bg-gray-100" >
-              Details
-            </a>
-          </li>
-        </ul>
-      )}
-    </div>
+                {isDropdownOpen && (
+                  <ul className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-md">
+                    <li>
+                      <a href="/transactions" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">
+                        Transactions
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/history" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">
+                        History
+                      </a>
+                    </li>
+                    <li>
+                      <a href="/details" className="block px-4 py-2 text-gray-800 hover:bg-gray-100">
+                        Details
+                      </a>
+                    </li>
+                  </ul>
+                )}
+              </div>
             </li>
           </ul>
         </div>
