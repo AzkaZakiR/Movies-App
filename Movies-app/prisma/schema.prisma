@@ -44,7 +44,7 @@ model Users{
 
 model Showtimes{
   id          String @id
-  date        DateTime
+  date        String
   seats       Json
   studios     Int
   startAt     String? 

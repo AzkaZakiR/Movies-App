@@ -6,34 +6,27 @@ import jwt_decode from "jwt-decode";
 import axios from "axios";
 
 const HeaderTop = () => {
-  const { mutate } = useSWRConfig();
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   <a href="/home" className="text-white text-2xl flex items-center justify-center">
     <TbMovie size={40} />
     SEA CINEMA
   </a>;
-  const toggleDropdown = () => {
-    setIsDropdownOpen((prevState) => !prevState);
-  };
 
-  const token = localStorage.getItem("token");
-  const decodedToken = jwt_decode(token);
-  const userId = decodedToken.id;
+  // const token = localStorage.getItem("token");
+  // const decodedToken = jwt_decode(token);
+  // const userId = decodedToken.id;
   const fetcher = async (url) => {
     const response = await axios.get(url);
     return response.data;
   };
-  const { data: userData, error } = useSWR(`http://localhost:4000/user/${userId}`, fetcher);
-  if (error) {
-    console.log("Error fetching user data: ", error);
-  }
+  // const { data: userData, error } = useSWR(`http://localhost:4000/user/${userId}`, fetcher);
+  // if (error) { console.log("Error fetching user data: ", error);}
 
   // const formattedBalance = userData.balance.toLocaleString("id-ID", {
   //   style: "currency",
   //   currency: "IDR",
   // });
 
-  console.log("User data: ", userData);
+  // console.log("User data: ", userData);
   return (
     <header className="py-2  bg-gradient-to-br from-slate-800 to-orange-800">
       <div class="flex flex-wrap place-items-center">

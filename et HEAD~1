@@ -1,0 +1,47 @@
+[33mcommit 9abc2d2936240cb17cc615b28a39874cd1178164[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: Azka Zaki <azkazaki11@gmail.com>
+Date:   Wed Jul 12 16:06:32 2023 +0700
+
+    Fix Bug
+
+[33mcommit ff5f72e71a51eb13164481c31bb472d2b66f9bac[m
+Author: Azka Zaki <azkazaki11@gmail.com>
+Date:   Mon Jul 10 13:55:37 2023 +0700
+
+    Add booking page
+
+[33mcommit baf2b5e837237c1fe57f9269107f2c983a676ee8[m
+Author: Azka Zaki <azkazaki11@gmail.com>
+Date:   Thu Jul 6 08:18:25 2023 +0700
+
+    Add movie detail page and login is now working
+
+[33mcommit 005f4d52ef9f6bdbc098846368cac46b30d3820e[m
+Author: Azka Zaki <azkazaki11@gmail.com>
+Date:   Wed Jul 5 00:49:00 2023 +0700
+
+    Add register & login, finally add movie list to home
+
+[33mcommit 1b03887f49bb35e528551f5e91488188a2a295ed[m
+Author: Azka Zaki <azkazaki11@gmail.com>
+Date:   Tue Jul 4 22:13:08 2023 +0700
+
+    Add transaction detail and some frontend
+
+[33mcommit 0a3ce513b06e2e9f5c323e12199dc8eea8637528[m
+Author: Azka Zaki <azkazaki11@gmail.com>
+Date:   Sun Jul 2 23:33:16 2023 +0700
+
+    Add register and login generate JWT not yet for Authorization
+
+[33mcommit 4fa931ea018869963d025a81c57c34e7891bbefb[m
+Author: Azka Zaki <azkazaki11@gmail.com>
+Date:   Wed Jun 28 23:41:41 2023 +0700
+
+    Add Showtime controller
+
+[33mcommit 5df74aa408a4686add27d158038cee7a5000e469[m
+Author: Azka Zaki <azkazaki11@gmail.com>
+Date:   Wed Jun 28 15:37:52 2023 +0700
+
+    fix things

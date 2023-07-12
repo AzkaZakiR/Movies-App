@@ -50,7 +50,8 @@ const SeatBookingPage = () => {
     });
     console.log(bookedseat);
     try {
-      const token = localStorage.getItem("token");
+      // const token = localStorage.getItem("token");
+      // console.log("The token" + token);
       const buy = await axios.post(
         `http://localhost:4000/movies/date/booking`,
         {
