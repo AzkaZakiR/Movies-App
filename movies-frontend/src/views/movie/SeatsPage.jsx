@@ -74,9 +74,15 @@ const SeatBookingPage = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="columns-2 ">
-        <h1 className="text-2x1 font-bold mb-4"> Selected seats: </h1>
-        <h1 className="text-2xl font-bold mb-4">Booking Seats</h1>
+      <h1 className="text-2xl font-bold mb-4">Booking Seats</h1>
+      <div className="columns-7">
+        <div> </div>
+        <h1 className="text-2x1 font-bold mb-2"> Selected seats: </h1>
+        {selectedSeats.map((seat) => (
+          <p key={seat} className=" text-black m-2 ">
+            {seat}
+          </p>
+        ))}
       </div>
       <div className="bg-gray-400 border border-black text-center mb-6">Screen</div>
       {/* <div className="flex flex-wrap justify-center"> */}

@@ -34,9 +34,12 @@ const MovieList = () => {
               <div className="aspect-w-2 aspect-h-3">
                 <img src={movie.poster} alt={movie.title} className="object-cover rounded-t" />
               </div>
-              <div className="p-4">
+              <div className="p-2">
                 <h2 className="text-xl font-bold mb-2">{movie.title}</h2>
-                <p className="text-gray-600">{movie.director}</p>
+                <div className="columns-2">
+                  <p className="text-gray-600">{movie.director}</p>
+                  <p className="text-blue-600">{movie.rating}+</p>
+                </div>
               </div>
             </div>
           </Link>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import useSWR, { useSWRConfig } from "swr";
+import jwt_decode from "jwt-decode";
 
 const MovieDetail = () => {
   const { id } = useParams();
@@ -25,13 +26,10 @@ const MovieDetail = () => {
         <h2> No schedule is found</h2>;
       }
       setSelectedSchedule(jadwal.data);
-      console.log(jadwal.data);
     } catch (error) {
       console.log(error);
     }
     // setSelectedSchedule(le);
-    console.log("Tanggal: " + tglBaru);
-    console.log("type Tanggal: " + typeof tglBaru);
   };
 
   const handleBuyTicket = () => {
@@ -43,7 +41,6 @@ const MovieDetail = () => {
       try {
         const response = await axios.get(`http://localhost:4000/movies/${id}`);
         setMovie(response.data);
-        console.log(response.data);
       } catch (error) {
         console.log(error);
       }
@@ -56,7 +53,6 @@ const MovieDetail = () => {
       try {
         const jadwal = await axios.get(`http://localhost:4000/movies/date/${id}`);
         setMovieSchedule(jadwal.data.response);
-        console.log(jadwal.data.response);
       } catch (error) {
         console.error("Error fetching movie schedule:", error);
       }
