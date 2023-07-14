@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Modal from "react-modal";
 import "../css/login.css";
 
@@ -9,6 +10,7 @@ const Loginpage = (closeModal) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -19,6 +21,9 @@ const Loginpage = (closeModal) => {
       });
       const { accessToken } = response.data.data;
       localStorage.setItem("token", accessToken);
+      //navigate("/home");
+      window.location.href = "/home";
+
       console.log("Successfully logged in", Response.data);
     } catch (error) {
       if (error.response) {

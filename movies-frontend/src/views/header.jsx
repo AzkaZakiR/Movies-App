@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { TbMovie } from "react-icons/tb";
+import { BiSolidBell } from "react-icons/bi";
 import { FaUserCircle } from "react-icons/fa";
 import Modal from "./user/cobaLogin";
 import RegisterModal from "./user/Register";
@@ -27,9 +28,10 @@ const HeaderTop = () => {
       setDropdown(false);
     }, 300); // Adjust the delay time as needed (200 milliseconds in this example)
   };
-  // const token = localStorage.getItem("token");
-  // const decodedToken = jwt_decode(token);
-  // const userId = decodedToken.id;
+  const token = localStorage.getItem("token");
+  const decodedToken = jwt_decode(token);
+  const userId = decodedToken.id;
+
   const fetcher = async (url) => {
     const response = await axios.get(url);
     return response.data;
@@ -45,6 +47,12 @@ const HeaderTop = () => {
       setIsLoggedIn(true);
     }
   }, []);
+
+  const signOut = () => {
+    localStorage.removeItem("token");
+
+    window.location.href = "/home";
+  };
   const renderGuestLinks = () => {
     return (
       <>
@@ -71,11 +79,13 @@ const HeaderTop = () => {
         ) : (
           <h1>Loading...</h1>
         )} */}
-        <div class="relative ml-3">
+        <div class="relative ml-3 flex ">
+          <TbMovie size={30} />
+
           <div>
             <button
               type="button"
-              class="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 hover:shadow-md "
+              className="mx-4 flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 hover:shadow-md "
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
             >
@@ -85,13 +95,13 @@ const HeaderTop = () => {
           </div>
           {dropdown && (
             <div class="absolute mt-2 right-0 z-10  w-48 origin-top-right rounded-md bg-red-700 py-1 shadow-lg ring-1 ring-black ring-opacity-5 " role="menu" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-              <a href="#" class="block px-4 py-2 text-sm text-white hover:bg-red-500">
+              <a href={`/profile/${userId}`} class="block px-4 py-2 text-sm text-white hover:bg-red-500">
                 Your Profile
               </a>
               <a href="/history" class="block px-4 py-2 text-sm text-white hover:bg-red-400">
                 See history
               </a>
-              <a href="#" class="block px-4 py-2 text-sm text-white hover:bg-red-400">
+              <a href="#" class="block px-4 py-2 text-sm text-white hover:bg-red-400" onClick={signOut}>
                 Sign out
               </a>
             </div>

@@ -11,11 +11,13 @@ export const createTransactions = async (req, res) => {
   let count = 0;
   let showTime = await prisma.showtimes.findUnique({
     where: {
+      //find showtimes with the given Id
       id: showTimeId,
     },
   });
   let findPrice = await prisma.movies.findFirst({
     where: {
+      //find the selected movies with the showtimes given Id
       id: showTime.movieId,
     },
   });
@@ -25,21 +27,25 @@ export const createTransactions = async (req, res) => {
       count++;
     }
   }
-  let totalPrice = count * findPrice.price;
   if (count > 6) {
-    return res.status(400).json({ error: "Maximum limit of 6 seats exceeded" });
+    return res.status(400).json({ error: "Maximum limit of 6 seats exceeded" }); //check if the seats exceeded 6
   }
+  let totalPrice = count * findPrice.price;
+
   let seatString = JSON.stringify(bookedseat);
-  console.log("Number of totalPrice:" + totalPrice);
+  console.log("Number of totalPrice: " + totalPrice);
   const user = { connect: { id: userId } };
   const showtime = { connect: { id: showTimeId } };
-  const schedule = await prisma.showtimes.findUnique({
-    where: { id: showTimeId },
-  });
   const kursibuking = {
-    ...schedule.seats, // Existing seats data from the showtime record
+    ...showTime.seats, // Existing seats data from the showtime record
     ...bookedseat, // User's selected seats
   };
+  const pengguna = await prisma.users.findUnique({ where: { id: userId } }); //find the user to check the balance
+
+  if (pengguna.balance < totalPrice) {
+    return res.status(400).json({ msg: "Insufficient balance." });
+  }
+  console.log(pengguna);
   try {
     const transaction = await prisma.transactions.create({
       data: {
@@ -71,10 +77,13 @@ export const confirmTransactions = async (req, res) => {
   const transactionId = req.params.id;
   let ticketCode = `tckt-${uuidv4().split("-")[0]}`;
   try {
-    let seats = await prisma.transactions.findUnique({ where: { id: parseInt(transactionId) } });
-    console.log(seats);
-    let kursi = JSON.parse(seats.booked_seat);
+    let transactionData = await prisma.transactions.findUnique({ where: { id: parseInt(transactionId) } });
+    console.log(transactionData);
+    let kursi = JSON.parse(transactionData.booked_seat);
     let count = Object.keys(kursi).length;
+    let totalcost = transactionData.totalcost;
+
+    console.log("Total cost" + totalcost);
     console.log("Hasil kursi" + kursi);
     console.log("Hasil count" + count);
 
@@ -87,6 +96,17 @@ export const confirmTransactions = async (req, res) => {
       },
       data: {
         status: "success",
+      },
+    });
+
+    const moviePrice = await prisma.users.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        balance: {
+          decrement: totalcost,
+        },
       },
     });
 

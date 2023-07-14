@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
-import useSWR, { useSWRConfig } from "swr";
-import jwt_decode from "jwt-decode";
 
 const MovieDetail = () => {
   const { id } = useParams();
@@ -101,7 +99,7 @@ const MovieDetail = () => {
               </li>
               <li>
                 <span className="grid grid-cols-3">
-                  <span className="font-bold">Rating:</span>
+                  <span className="font-bold"> Age Rating:</span>
                   <span>: {movie.rating}</span>
                 </span>
               </li>
@@ -114,7 +112,13 @@ const MovieDetail = () => {
               <li>
                 <span className="grid grid-cols-3">
                   <span className="font-bold">Movie Format:</span>
-                  <span>{movie.movie_format}</span>
+                  <span>:{movie.movie_format}</span>
+                </span>
+              </li>
+              <li>
+                <span className="grid grid-cols-3">
+                  <span className="font-bold">Ticket Price:</span>
+                  <span>:Rp. {movie.price}</span>
                 </span>
               </li>
             </ul>

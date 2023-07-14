@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import jwt_decode from "jwt-decode";
 
 function Modal({ closeModal, openRegister }) {
   const [username, setUsername] = useState("");

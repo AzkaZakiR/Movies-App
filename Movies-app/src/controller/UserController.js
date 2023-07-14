@@ -3,11 +3,56 @@ import { v4 as uuidv4 } from "uuid";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import secretKey from "../Middleware/config.js";
+import { response } from "express";
 
 const prisma = new PrismaClient();
 const saltRound = 5;
 //const bcrypt = new bcrypt();
 
+export const topUp = async (req, res) => {
+  const userId = req.userId;
+  const { moneyAmount } = req.body;
+  console.log(typeof moneyAmount);
+  try {
+    const isiUang = await prisma.users.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        balance: {
+          increment: parseInt(moneyAmount),
+        },
+      },
+    });
+    res.status(201).json(isiUang);
+    console.log(isiUang);
+  } catch (error) {
+    console.log(error.message);
+    res.status(400).json({ msg: error.message });
+  }
+};
+export const withdraw = async (req, res) => {
+  const userId = req.userId;
+  const { moneyAmount } = req.body;
+  console.log(typeof moneyAmount);
+  try {
+    const isiUang = await prisma.users.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        balance: {
+          decrement: parseInt(moneyAmount),
+        },
+      },
+    });
+    res.status(201).json(isiUang);
+    console.log(isiUang);
+  } catch (error) {
+    console.log(error.message);
+    res.status(400).json({ msg: error.message });
+  }
+};
 export const getUserDetail = async (req, res) => {
   const userId = req.params.id;
   console.log("This is the user ID:", userId);
