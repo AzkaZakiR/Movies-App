@@ -12,6 +12,7 @@ const saltRound = 5;
 export const topUp = async (req, res) => {
   const userId = req.userId;
   const { moneyAmount } = req.body;
+
   console.log(typeof moneyAmount);
   try {
     const isiUang = await prisma.users.update({
@@ -34,7 +35,16 @@ export const topUp = async (req, res) => {
 export const withdraw = async (req, res) => {
   const userId = req.userId;
   const { moneyAmount } = req.body;
-  console.log(typeof moneyAmount);
+  console.log("jumlah duit");
+  const compare = await prisma.users.findUnique({
+    where: {
+      id: userId,
+    },
+  });
+  console.log(compare);
+  if (moneyAmount > compare.balance) {
+    return res.status(400).json({ msg: "Insufficient balance." });
+  }
   try {
     const isiUang = await prisma.users.update({
       where: {
