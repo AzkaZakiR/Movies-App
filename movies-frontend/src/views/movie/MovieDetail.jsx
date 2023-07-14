@@ -8,7 +8,6 @@ const MovieDetail = () => {
   const { id } = useParams();
   const [movie, setMovie] = useState([]);
   const [movieSchedule, setMovieSchedule] = useState([]);
-  const [showSchedule, setShowSchedule] = useState(false);
   const [selectedSchedule, setSelectedSchedule] = useState([]);
   const [dates, setDates] = useState(["2023-06-15", "2023-06-16", "2023-06-17", "2023-06-18", "2023-06-19", "2023-06-20", "2023-06-21"]);
   const [selectedDate, setSelectedDate] = useState(dates[0]);
@@ -30,10 +29,6 @@ const MovieDetail = () => {
       console.log(error);
     }
     // setSelectedSchedule(le);
-  };
-
-  const handleBuyTicket = () => {
-    setShowSchedule(!showSchedule);
   };
 
   useEffect(() => {
@@ -81,55 +76,55 @@ const MovieDetail = () => {
   };
 
   return (
-    <div className="flex flex-row justify-center items-center">
-      <div className="col-3 my-4">
-        <img src={movie.poster} />
-      </div>
-      <div className="w-full lg:w-1/2 p-4">
-        <h1 className="text-4xl font-bold mb-4">{movie.title}</h1>
-        <div className="my-4">
-          <ul className="font-semibold">
-            <li>
-              <span className="grid grid-cols-3">
-                <span className="font-bold">Director</span>
-                <span>:{movie.director}</span>
-              </span>
-            </li>
-            <li>
-              <span className="grid grid-cols-3">
-                <span className="font-bold">Duration</span>
-                <span>:{movie.duration}</span>
-              </span>
-            </li>
-            <li>
-              <span className="grid grid-cols-3">
-                <span className="font-bold">Rating:</span>
-                <span>:{movie.rating}</span>
-              </span>
-            </li>
-            <li>
-              <span className="grid grid-cols-3">
-                <span className="font-bold">Subtitle:</span>
-                <span>:{movie.subtitle}</span>
-              </span>
-            </li>
-            <li>
-              <span className="grid grid-cols-3">
-                <span className="font-bold">Movie Format:</span>
-                <span>{movie.movie_format}</span>
-              </span>
-            </li>
-          </ul>
-        </div>
-        <h3 className="text-lg font-bold mb-2">Synopsis</h3>
-        <p className="mb-2">{movie.description}</p>
-        <button className="bg-red-700 text-white py-2 px-4 mb-2 rounded w-full" onClick={handleBuyTicket}>
-          Buy Ticket
-        </button>
-        {showSchedule && (
+    <div className="bg-gradient-to-r from-black to-orange-800">
+      <div className="flex flex-row justify-center items-center text-slate-200">
+        <div className="w-full lg:w-1/2 p-4">
+          <div className="flex justify-center">
+            {" "}
+            <img src={movie.poster} />
+          </div>
+
+          <h1 className="text-4xl font-bold my-4 text-center">{movie.title}</h1>
+          <div className="my-4">
+            <ul className="font-semibold">
+              <li>
+                <span className="grid grid-cols-3">
+                  <span className="font-bold">Director</span>
+                  <span>: {movie.director}</span>
+                </span>
+              </li>
+              <li>
+                <span className="grid grid-cols-3">
+                  <span className="font-bold">Duration </span>
+                  <span>: {movie.duration}</span>
+                </span>
+              </li>
+              <li>
+                <span className="grid grid-cols-3">
+                  <span className="font-bold">Rating:</span>
+                  <span>: {movie.rating}</span>
+                </span>
+              </li>
+              <li>
+                <span className="grid grid-cols-3">
+                  <span className="font-bold">Subtitle:</span>
+                  <span>: {movie.subtitle}</span>
+                </span>
+              </li>
+              <li>
+                <span className="grid grid-cols-3">
+                  <span className="font-bold">Movie Format:</span>
+                  <span>{movie.movie_format}</span>
+                </span>
+              </li>
+            </ul>
+          </div>
+          <h3 className="text-lg text-justify font-bold mb-2">Synopsis</h3>
+          <p className="mb-2">{movie.description}</p>
+          <hr></hr>
           <div>
-            <div className="flex justify-center mb-4 text-blue-400">
-              <div>
+            <div className="flex justify-center mb-4 text-blue-400 my-2">
+              <div className="">
                 {" "}
                 <h2> Choose your date: </h2>
               </div>
@@ -142,8 +137,12 @@ const MovieDetail = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-8 gap-4">
               {dates.map((date) => (
                 <a key={date}>
-                  <div key={date} className={` block rounded-lg border ${selectedDate === date ? "bg-red-500 font-bold text-slate-50  border-white" : "border-red-700"} p-2 text-red-400`} onClick={() => handleDateClick(date)}>
-                    <h3>{date}</h3>
+                  <div
+                    key={date}
+                    className={`w-20 h-20 rounded-full    border ${selectedDate === date ? "bg-white  text-black  " : "text-white"} cursor-pointer font-mono   border-white border-opacity-10 hover:shadow-white  hover:shadow-sm`}
+                    onClick={() => handleDateClick(date)}
+                  >
+                    <h3 className="m-4">{date}</h3>
                   </div>
                 </a>
               ))}
@@ -152,29 +151,14 @@ const MovieDetail = () => {
               {/* ... */}
               {selectedSchedule.map((schedule) => (
                 <Link to={`/movies/shows/${schedule.id}`} key={schedule.id}>
-                  <div key={schedule.id} className="block rounded-lg bg-white border border-black text-black p-2">
+                  <div key={schedule.id} className="font-medium block rounded-lg focus:outline-none focus:ring  border border-white  text-white p-2 hover:bg-white hover:text-black anim transition-colors duration-500">
                     <p>{schedule.startAt}</p>
                   </div>
                 </Link>
               ))}
-              <div className="block rounded-lg bg-black border border-black text-white p-2">
-                <p>16.00</p>
-              </div>
             </div>
           </div>
-        )}
-        {/* {movieSchedule.map((jadwals) => (
-                      <div className="block rounded-lg bg-black text-white p-2" key={jadwals.id}>
-                        <h1>{jadwals.startAt}</h1>
-                      </div>))} */}
-        {/* <div className="grid   md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-7 gap-4 my-6">
-          {movieSchedule.map((jadwals) => (
-            <div className="block rounded-lg bg-black text-white p-2" key={jadwals.id}>
-              <h1>{jadwals.startAt}</h1>
-              <h2>{jadwals.date}</h2>
-            </div>
-          ))}
-        </div> */}
+        </div>
       </div>
     </div>
   );

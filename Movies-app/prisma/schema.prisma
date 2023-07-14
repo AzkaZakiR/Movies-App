@@ -56,7 +56,7 @@ model Showtimes{
 }
 
 model Ticket{
-  id          String @id
+  id          Int @id @default(autoincrement())
   ticketCode  String 
   seat        Int
   createdAt   DateTime @default(now())

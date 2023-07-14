@@ -25,15 +25,16 @@ export const getUserDetail = async (req, res) => {
   }
 };
 export const registerUser = async (req, res) => {
-  console.log(req.body);
   const { name, username, password, confPassword, age, role } = req.body;
   const checkUsername = await prisma.users.findUnique({
     where: { username: username },
   });
-  if (username == checkUsername) {
-    return res.status(400).json({ msg: "username sudah ada" });
+  if (checkUsername) {
+    return res.status(400).json({ msg: "username already exist" });
   }
-  if (password !== confPassword) return res.status(400).json({ msg: "Password dan Confirm Password tidak cocok" });
+  if (password.length < 8) return res.status(400).json({ msg: "Password can't be less than 8 characters!" });
+
+  if (password !== confPassword) return res.status(400).json({ msg: "Password and Confirmation password do not match!!" });
   const hashPass = bcrypt.hashSync(password, saltRound);
   let uid, roles;
   if (role == 1) {
@@ -60,6 +61,7 @@ export const registerUser = async (req, res) => {
     res.status(201).json({ message: "User registered succesfully", user });
   } catch (error) {
     res.status(400).json({ msg: error.message });
+    console.log(error);
   }
 };
 
