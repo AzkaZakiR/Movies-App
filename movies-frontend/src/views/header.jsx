@@ -14,6 +14,7 @@ const HeaderTop = () => {
   const [registerModal, setregisterModal] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [dropdown, setDropdown] = useState(false);
+  const [historyUser, setHistoryUser] = useState([]);
 
   const timeoutRef = useRef(null);
 
@@ -32,10 +33,6 @@ const HeaderTop = () => {
   const decodedToken = jwt_decode(token);
   const userId = decodedToken.id;
 
-  const fetcher = async (url) => {
-    const response = await axios.get(url);
-    return response.data;
-  };
   // const { data: userData, error } = useSWR(`http://localhost:4000/user/${userId}`, fetcher);
   // if (error) { console.log("Error fetching user data: ", error);}
 
@@ -80,8 +77,11 @@ const HeaderTop = () => {
           <h1>Loading...</h1>
         )} */}
         <div class="relative ml-3 flex ">
-          <TbMovie size={30} />
-
+          <a href="/transactions">
+            <button className="mx-4 flex rounded-full bg-gray-800 hover:shadow-slate-100 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 hover:shadow-lg  ">
+              <BiSolidBell size={30} />
+            </button>
+          </a>
           <div>
             <button
               type="button"

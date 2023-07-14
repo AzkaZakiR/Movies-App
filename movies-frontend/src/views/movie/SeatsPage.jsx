@@ -75,7 +75,7 @@ const SeatBookingPage = () => {
   }
   return (
     <div className="bg-gradient-to-r from-black to-red-800 min-h-screen">
-      <div className="container mx-auto px-4 py-8 text-white fixed">
+      <div className="container mx-auto px-4 py-8 text-white" style={{ height: "80vh", overflowY: "auto" }}>
         <h1 className="text-2x1 font-bold mb-2">Selected seats: </h1>
         <div className="flex flex-wrap">
           {selectedSeats.map((seat) => (
@@ -86,38 +86,35 @@ const SeatBookingPage = () => {
         </div>
         <div className="bg-gray-400 border border-black text-center my-4 rounded-b-lg">Screen</div>
         {/* <div className="flex flex-wrap justify-center"> */}
-        <div className="booking-screen items-start">
-          {" "}
-          <div className="grid  md:grid-cols-1 lg:grid-cols-4 xl:grid-cols-12 gap-1 my-6">
-            {Object.keys(seatsData)
-              .slice(0, 60)
-              .map((seat) => (
-                <div
-                  key={seat}
-                  className={`w-11 h-8 border border-gray-500 rounded-md flex items-center justify-center mr-2 mb-3 ${
-                    seatsData[seat] ? "bg-gray-500 cursor-not-allowed text-slate-400" : selectedSeats.includes(seat) ? "bg-blue-500 text-slate-50" : "bg-white hover:bg-slate-200 text-black cursor-pointer"
-                  } ${seatsData[seat] ? "bg-gray-500" : ""}`}
-                  onClick={() => handleSeatSelection(seat)}
-                >
-                  {seat}
-                </div>
-              ))}
-          </div>
-          <div className="flex justify-center items-center ">
-            {Object.keys(seatsData)
-              .slice(-4)
-              .map((seat) => (
-                <div
-                  key={seat}
-                  className={`w-11 h-8 border border-gray-500 rounded-md flex items-center justify-center mx-5 mb-3 ${
-                    seatsData[seat] ? "bg-gray-500 cursor-not-allowed text-slate-400" : selectedSeats.includes(seat) ? "bg-blue-500 text-slate-50" : "bg-white hover:bg-slate-200 text-black cursor-pointer"
-                  } ${seatsData[seat] ? "bg-gray-500" : ""}`}
-                  onClick={() => handleSeatSelection(seat)}
-                >
-                  {seat}
-                </div>
-              ))}
-          </div>
+        <div className="grid  md:grid-cols-1 lg:grid-cols-4 xl:grid-cols-12 gap-1 my-6">
+          {Object.keys(seatsData)
+            .slice(0, 60)
+            .map((seat) => (
+              <div
+                key={seat}
+                className={`w-11 h-8 border border-gray-500 rounded-md flex items-center justify-center mr-2 mb-3 ${
+                  seatsData[seat] ? "bg-gray-500 cursor-not-allowed text-slate-400" : selectedSeats.includes(seat) ? "bg-blue-500 text-slate-50" : "bg-white hover:bg-slate-200 text-black cursor-pointer"
+                } ${seatsData[seat] ? "bg-gray-500" : ""}`}
+                onClick={() => handleSeatSelection(seat)}
+              >
+                {seat}
+              </div>
+            ))}
+        </div>
+        <div className="flex justify-center items-center ">
+          {Object.keys(seatsData)
+            .slice(-4)
+            .map((seat) => (
+              <div
+                key={seat}
+                className={`w-11 h-8 border border-gray-500 rounded-md flex items-center justify-center mx-5 mb-3 ${
+                  seatsData[seat] ? "bg-gray-500 cursor-not-allowed text-slate-400" : selectedSeats.includes(seat) ? "bg-blue-500 text-slate-50" : "bg-white hover:bg-slate-200 text-black cursor-pointer"
+                } ${seatsData[seat] ? "bg-gray-500" : ""}`}
+                onClick={() => handleSeatSelection(seat)}
+              >
+                {seat}
+              </div>
+            ))}
         </div>
         <div className="my-4 flex ml-10">
           {/* <div ="columns-10"> */}

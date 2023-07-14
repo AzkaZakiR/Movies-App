@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import jwt_decode from "jwt-decode";
 
-const TransactionHistory = () => {
+const ConfirmTransaction = () => {
   const [historyUser, setHistoryUser] = useState([]);
+  const token = localStorage.getItem("token");
+  const decodedToken = jwt_decode(token);
+  const userId = decodedToken.id;
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -15,14 +19,36 @@ const TransactionHistory = () => {
           },
         };
         const history = await axios.get("http://localhost:4000/history", config);
-        setHistoryUser(history.data);
-        console.log(history.data);
+        const pendingTransactions = history.data.filter((transaction) => transaction.status === "pending");
+
+        setHistoryUser(pendingTransactions);
+        console.log("The data");
+        console.log(pendingTransactions);
       } catch (error) {
         console.error("Error fetching movie schedule:", error);
       }
     };
     fetchHistory();
   }, []);
+
+  const handleConfirmation = async (transactionId) => {
+    try {
+      const token = localStorage.getItem("token");
+      const config = {
+        headers: { "x-access-token": token },
+        // Include the token in the request
+      };
+      console.log("the token is:", config);
+
+      await axios.post(`http://localhost:4000/transactions/confirm/${transactionId}`, null, config);
+
+      console.log("Transaction confirmed successfully!");
+
+      //   history.push("/success-page");
+    } catch (error) {
+      console.error("Error confirming transaction:", error);
+    }
+  };
   return (
     <div className="flex justify-center bg-gradient-to-r from-black to-red-800 min-h-screen">
       <div className="container mx-auto text-white flex flex-col items-center">
@@ -54,6 +80,15 @@ const TransactionHistory = () => {
                   <h1 className="text-xl">Date: {history.createdAt.slice(0, 10)}</h1>
                   <h2 className="my-3">{history.status}</h2>
                 </div>
+                <div className="flex m-5">
+                  <Link>
+                    <button onClick={() => handleConfirmation(history.id)} className="bg-green-500 text-white py-2 px-4 mx-4 rounded w-full hover:bg-green-700 hover:text-white transition-colors duration-500 ">
+                      Confirm
+                    </button>
+                  </Link>
+                  <button className="bg-red-500 text-white py-2 px-4 mx-4 rounded w-full hover:bg-red-700 hover:text-white transition-colors duration-500 "> Cancel</button>
+                </div>
+                <div></div>
               </div>
             </div>
           </div>
@@ -84,4 +119,4 @@ const TransactionHistory = () => {
   );
 };
 
-export default TransactionHistory;
+export default ConfirmTransaction;

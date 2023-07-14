@@ -10,6 +10,7 @@ import MovieDetail from "./views/movie/MovieDetail";
 import SeatBookingPage from "./views/movie/SeatsPage";
 import TransactionHistory from "./views/user/TransactionHistory";
 import DetailProfile from "./views/user/profile";
+import ConfirmTransaction from "./views/movie/confirmTransaction";
 import { Navigate } from "react-router-dom";
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
           {/* Component={<PrivateRoute Component={<SeatBookingPage />} />} */}
           <Route path="/profile/:id" Component={DetailProfile} />
           <Route path="/history" Component={TransactionHistory} />
+          <Route path="/transactions" Component={ConfirmTransaction} />
         </Routes>
       </BrowserRouter>
     </div>
