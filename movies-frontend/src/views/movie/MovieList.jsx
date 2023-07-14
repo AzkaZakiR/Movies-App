@@ -5,11 +5,7 @@ import { Link } from "react-router-dom";
 
 const MovieList = () => {
   const [movies, setMovies] = useState([]);
-  const { mutate } = useSWRConfig();
 
-  // useEffect(() => {
-  //   fetchMovies();
-  // }, []);
   const fetchMovies = async () => {
     try {
       const response = await axios.get("http://localhost:4000/movies");

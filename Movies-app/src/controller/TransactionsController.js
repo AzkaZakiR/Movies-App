@@ -126,16 +126,55 @@ export const cancelTransactions = async (req, res) => {
 
 export const transactionHistory = async (req, res) => {
   const userId = req.userId;
-
+  let filmId = [];
+  let showId = [];
+  let moviePoster = [];
+  let movieTitle = [];
   try {
+    console.log("User ID" + userId);
+
     const history = await prisma.transactions.findMany({
       where: {
         userId: userId,
       },
     });
+
+    for (let i = 0; i < history.length; i++) {
+      showId.push(history[i].showTimeId);
+    }
+    // console.log("Show Id" + showId);
+    for (let x = 0; x < showId.length; x++) {
+      const findId = await prisma.showtimes.findUnique({
+        where: {
+          id: showId[x],
+        },
+      });
+
+      filmId.push(findId.movieId);
+    }
+    console.log(filmId);
+    for (let i = 0; i < filmId.length; i++) {
+      const image = await prisma.movies.findUnique({
+        where: {
+          id: filmId[i],
+        },
+      });
+      moviePoster.push(image.poster);
+      movieTitle.push(image.title);
+    }
+    //console.log("Poster" + moviePoster);
+    console.log(moviePoster[1]);
+    for (let i = 0; i < history.length; i++) {
+      history[i].poster = moviePoster[i];
+    }
+    for (let i = 0; i < history.length; i++) {
+      history[i].title = movieTitle[i];
+    }
+    console.log(history);
     res.status(200).json(history);
   } catch (error) {
     res.status(500).json({ msg: error });
+    console.log(error);
   }
 };
 

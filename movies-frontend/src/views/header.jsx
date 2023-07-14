@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { TbMovie } from "react-icons/tb";
+import { FaUserCircle } from "react-icons/fa";
 import Modal from "./user/cobaLogin";
 import RegisterModal from "./user/Register";
 import useSWR, { useSWRConfig } from "swr";
@@ -11,7 +12,21 @@ const HeaderTop = () => {
   const [loginModal, setloginModal] = useState(false);
   const [registerModal, setregisterModal] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [dropdown, setDropdown] = useState(false);
 
+  const timeoutRef = useRef(null);
+
+  const handleMouseEnter = () => {
+    clearTimeout(timeoutRef.current);
+    setDropdown(true);
+  };
+
+  const handleMouseLeave = () => {
+    clearTimeout(timeoutRef.current);
+    timeoutRef.current = setTimeout(() => {
+      setDropdown(false);
+    }, 300); // Adjust the delay time as needed (200 milliseconds in this example)
+  };
   // const token = localStorage.getItem("token");
   // const decodedToken = jwt_decode(token);
   // const userId = decodedToken.id;
@@ -33,12 +48,16 @@ const HeaderTop = () => {
   const renderGuestLinks = () => {
     return (
       <>
-        <button onClick={() => setloginModal(true)}>
-          <h1> Login </h1>
-        </button>
-        <button onClick={() => setregisterModal(true)}>
-          <h1> Register </h1>{" "}
-        </button>
+        <div className="mr-5">
+          <button onClick={() => setloginModal(true)}>
+            <h1> Login </h1>
+          </button>
+        </div>
+        <div>
+          <button onClick={() => setregisterModal(true)}>
+            <h1> Register </h1>{" "}
+          </button>
+        </div>
       </>
     );
   };
@@ -52,20 +71,32 @@ const HeaderTop = () => {
         ) : (
           <h1>Loading...</h1>
         )} */}
-        <a class="flex items-center hover:text-gray-200 mx-3" href="#">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-          </svg>
-          <span class="flex absolute -mt-5 ml-4">
-            <span class="animate-ping absolute inline-flex h-3 w-3 rounded-full bg-pink-400 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-3 w-3 bg-pink-500"></span>
-          </span>
-        </a>
-        <a class="flex items-center hover:text-gray-200" href="#">
-          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hover:text-gray-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        </a>
+        <div class="relative ml-3">
+          <div>
+            <button
+              type="button"
+              class="flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 hover:shadow-md "
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+            >
+              <span class="sr-only">Open user menu</span>
+              <FaUserCircle size={30} />
+            </button>
+          </div>
+          {dropdown && (
+            <div class="absolute mt-2 right-0 z-10  w-48 origin-top-right rounded-md bg-red-700 py-1 shadow-lg ring-1 ring-black ring-opacity-5 " role="menu" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+              <a href="#" class="block px-4 py-2 text-sm text-white hover:bg-red-500">
+                Your Profile
+              </a>
+              <a href="/history" class="block px-4 py-2 text-sm text-white hover:bg-red-400">
+                See history
+              </a>
+              <a href="#" class="block px-4 py-2 text-sm text-white hover:bg-red-400">
+                Sign out
+              </a>
+            </div>
+          )}
+        </div>
       </>
     );
   };
@@ -109,16 +140,7 @@ const HeaderTop = () => {
                   {userData ? <h1> Idr {userData.balance} </h1> : <h1>Loading...</h1>
                    <h1>{formattedBalance}</h1>} */}
                 </div>
-                <div className="mr-5">
-                  <button onClick={() => setloginModal(true)}>
-                    <h1> Login </h1>
-                  </button>
-                </div>
-                <div>
-                  <button onClick={() => setregisterModal(true)}>
-                    <h1> Register </h1>{" "}
-                  </button>
-                </div>
+
                 {loginModal && <Modal closeModal={() => setloginModal(false)} openRegister={() => setregisterModal(true)} />}
                 {registerModal && <RegisterModal closeModal={() => setregisterModal(false)} openLogin={() => setloginModal(true)} />}
 

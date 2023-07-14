@@ -7,6 +7,7 @@ import Loginpage from "./views/Login";
 import MovieList from "./views/movie/MovieList";
 import MovieDetail from "./views/movie/MovieDetail";
 import SeatBookingPage from "./views/movie/SeatsPage";
+import TransactionHistory from "./views/user/TransactionHistory";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/movie" Component={MovieDetail} />
           <Route path="/movies/:id" Component={MovieDetail} />
           <Route path="/movies/shows/:id" Component={SeatBookingPage} />
+          <Route path="/history" Component={TransactionHistory} />
         </Routes>
       </BrowserRouter>
     </div>
