@@ -10,11 +10,15 @@ import jwt_decode from "jwt-decode";
 import axios from "axios";
 
 const HeaderTop = () => {
+  const { mutate } = useSWRConfig();
   const [loginModal, setloginModal] = useState(false);
   const [registerModal, setregisterModal] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [dropdown, setDropdown] = useState(false);
   const [historyUser, setHistoryUser] = useState([]);
+  const [userId, setUserId] = useState(null);
+  const [userData, setUserData] = useState(null);
+  const [error, setError] = useState(null);
 
   const timeoutRef = useRef(null);
 
@@ -29,21 +33,40 @@ const HeaderTop = () => {
       setDropdown(false);
     }, 300); // Adjust the delay time as needed (200 milliseconds in this example)
   };
-  const token = localStorage.getItem("token");
-  const decodedToken = jwt_decode(token);
-  const userId = decodedToken.id;
 
-  // const { data: userData, error } = useSWR(`http://localhost:4000/user/${userId}`, fetcher);
-  // if (error) { console.log("Error fetching user data: ", error);}
-
-  // const formattedBalance = userData.balance.toLocaleString("id-ID", {   style: "currency", currency: "IDR", });
   useEffect(() => {
     const userLoggedIn = localStorage.getItem("token");
+    // const token = localStorage.getItem("token");
+    let decodedToken = null;
+    let IdofUser = null;
 
     if (userLoggedIn) {
+      decodedToken = jwt_decode(userLoggedIn);
+      IdofUser = decodedToken.id;
       setIsLoggedIn(true);
+      setUserId(IdofUser);
     }
   }, []);
+
+  const fetchUserData = async () => {
+    try {
+      const response = await axios.get(`http://localhost:4000/user/${userId}`);
+      setUserData(response.data);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      setError(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserData();
+  }, [userId]);
+  // const { data: } = useSWR(`http://localhost:4000/user/${userId}`, fetcher);
+  // if (error) {
+  //   console.log("Error fetching user data: ", error);
+  // }
+
+  const formattedBalance = userData ? userData.balance.toLocaleString("id-ID", { style: "currency", currency: "IDR" }) : "";
 
   const signOut = () => {
     localStorage.removeItem("token");
@@ -68,14 +91,14 @@ const HeaderTop = () => {
   };
 
   const renderLoggedInLinks = () => {
+    if (!userId) {
+      return null; // If userId is not available, return null to prevent rendering the links
+    }
+
     return (
       <>
         {/* Balance */}
-        {/* {userData ? (
-          <h1> Balance: Idr {formattedBalance}</h1>
-        ) : (
-          <h1>Loading...</h1>
-        )} */}
+        {userData ? <h1> Balance: Idr {formattedBalance}</h1> : <h1>Loading...</h1>}
         <div class="relative ml-3 flex ">
           <a href="/transactions">
             <button className="mx-4 flex rounded-full bg-gray-800 hover:shadow-slate-100 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 hover:shadow-lg  ">
@@ -110,6 +133,7 @@ const HeaderTop = () => {
       </>
     );
   };
+
   return (
     <header className="py-2  bg-gradient-to-r from-black to-orange-800">
       <div class="flex flex-wrap place-items-center  border-b border-white border-opacity-40 ">

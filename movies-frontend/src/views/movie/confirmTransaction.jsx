@@ -93,27 +93,6 @@ const ConfirmTransaction = () => {
             </div>
           </div>
         ))}
-
-        {/* <div>
-            <div className="flex items-center">
-              <img className="object-cover rounded-t h-80" src="https://image.tmdb.org/t/p/w500/fiVW06jE7z9YnO4trhaMEdclSiC.jpg" alt="Movie Poster" />
-            </div>
-          </div>
-          <div>
-            <h1 className="text-xl">Movie title</h1>
-            <h2 className="my-3">Seats: A1, A2, B4, C5</h2>
-          </div>
-          <div className="col-span-2">
-            <div className="flex flex-col items-center justify-center">
-              <div>
-                <h1 className="text-xl">Date:</h1>
-                <h2 className="my-3">Seats: A1, A2, B4, C5</h2>
-              </div>
-            </div>
-            <div>
-              <p>coba</p>
-            </div>
-          </div> */}
       </div>
     </div>
   );
