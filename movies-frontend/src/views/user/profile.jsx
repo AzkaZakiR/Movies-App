@@ -10,11 +10,18 @@ const DetailProfile = () => {
   const [balance, setBalance] = useState("");
   const [withdraw, setWithdraw] = useState("");
   const [error, setError] = useState("");
+  const [balanceUpdated, setBalanceUpdated] = useState(false);
+  const { mutate } = useSWRConfig();
 
   useEffect(() => {
     const fetchUserDetail = async () => {
+      const token = localStorage.getItem("token");
       try {
-        const response = await axios.get(`http://localhost:4000/user/${id}`);
+        const response = await axios.get(`http://localhost:4000/user`, {
+          headers: {
+            "x-access-token": token,
+          },
+        });
         setUser(response.data);
         console.log(response);
       } catch (error) {
@@ -40,6 +47,9 @@ const DetailProfile = () => {
         }
       );
       console.log(response.data);
+      setBalanceUpdated(true);
+      mutate();
+      window.location.reload(false);
     } catch (error) {
       console.log(error);
     }
@@ -60,6 +70,9 @@ const DetailProfile = () => {
         }
       );
       console.log(response.data);
+      setBalanceUpdated(true);
+      mutate();
+      window.location.reload(false);
     } catch (error) {
       console.log(error);
       if (error.response) {
@@ -76,11 +89,11 @@ const DetailProfile = () => {
   return (
     //<body className="bg-gradient-to-r from-black to-orange-800">
     <body className="bg-gray-500">
-      <div className="flex flex-row justify-center items-center text-white">
+      <div className="flex justify-center bg-gradient-to-r from-black to-red-800 min-h-screen">
         <div className="w-full lg:w-1/2 p-4">
           {/* <div className="flex justify-center">  <img src={movie.poster} /> </div> */}
-          <h1 className="text-center text-3xl">Profile</h1>
-          <div className="my-4">
+          <h1 className="text-center text-3xl text-white">Profile</h1>
+          <div className="my-4 text-white">
             <ul className="font-semibold">
               <li>
                 <span className="grid grid-cols-3">
@@ -100,33 +113,44 @@ const DetailProfile = () => {
                   <span>: {user.age}</span>
                 </span>
               </li>
-              <li>
-                <span className="grid grid-cols-3">
-                  <span className="font-bold">User Balance:</span>
-                  <span>: {user.balance}</span>
-                </span>
-              </li>
+              <span className="grid grid-cols-3">
+                <span className="font-bold">User Balance:</span>
+                <span>: Rp. {balanceUpdated ? "Updating..." : Number(user.balance).toLocaleString("en-ID")}</span>
+              </span>
             </ul>
           </div>
           <hr></hr>
           <div>
-            <div className="flex justify-center items-center mb-4 my-2">
+            <div className="flex justify-center items-center mb-4 my-2 text-white">
               <h2 className="mr-4">Choose How much to top up:</h2>
               <div>
-                <input type="number" id="balanceInput" className="w-full border-gray-300 rounded-lg p-2 mx-4 text-black" value={balance} onChange={(e) => setBalance(e.target.value)} />
+                <input
+                  datatype="currency"
+                  id="balanceInput"
+                  className="w-full border-gray-300 rounded-lg p-2 mx-4 text-black"
+                  value={`RP ${Number(balance).toLocaleString("en-ID")}`}
+                  onChange={(e) => setBalance(e.target.value.replace(/RP /, "").replace(/,/g, ""))}
+                />
               </div>
-              <button className="mx-6 bg-red-700 text-white py-2 px-4 rounded hover:bg-red-500 transition-colors duration-300" onClick={handleTopUp}>
+
+              <button className="mx-6 hover:bg-red-700 hover:text-white py-2 px-4 rounded bg-white text-red-600 transition-colors duration-100" onClick={handleTopUp}>
                 Top up
               </button>
             </div>
           </div>
           <div>
-            <div className="flex justify-center items-center mb-4 my-2">
+            <div className="flex justify-center items-center mb-4 my-2 text-white">
               <h2 className="mr-4">Choose How much to withdraw</h2>
               <div>
-                <input type="number" id="withdraw" className="w-full border-gray-300 rounded-lg p-2 mx-4 text-black" value={withdraw} onChange={(e) => setWithdraw(e.target.value)} />
+                <input
+                  datatype="currency"
+                  id="balanceInput"
+                  className="w-full border-gray-300 rounded-lg p-2 mx-4 text-black"
+                  value={`RP ${Number(withdraw).toLocaleString("en-ID")}`}
+                  onChange={(e) => setWithdraw(e.target.value.replace(/RP /, "").replace(/,/g, ""))}
+                />
               </div>
-              <button className="mx-6 bg-red-700 text-white py-2 px-4 rounded hover:bg-red-500 transition-colors duration-300" onClick={handleWithDraw}>
+              <button className="mx-6 hover:bg-red-700 hover:text-white py-2 px-4 rounded bg-white text-red-700 transition-colors duration-100" onClick={handleWithDraw}>
                 Withdraw
               </button>
             </div>

@@ -11,6 +11,6 @@ router.get("/user/history", [verifyToken], transactionHistory);
 router.post("/user/:id", [verifyToken], cancelTransactions);
 router.put("/user/topup", [verifyToken], topUp);
 router.put("/user/withdraw", [verifyToken], withdraw);
-router.get("/user/:id", getUserDetail);
+router.get("/user", [verifyToken], getUserDetail);
 
 export default router;

@@ -64,7 +64,8 @@ export const withdraw = async (req, res) => {
   }
 };
 export const getUserDetail = async (req, res) => {
-  const userId = req.params.id;
+  //const userId = req.params.id;
+  const userId = req.userId;
   console.log("This is the user ID:", userId);
 
   try {

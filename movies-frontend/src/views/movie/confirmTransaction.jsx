@@ -49,13 +49,31 @@ const ConfirmTransaction = () => {
       console.error("Error confirming transaction:", error);
     }
   };
+  const handleCancellation = async (transactionId) => {
+    try {
+      const token = localStorage.getItem("token");
+      const config = {
+        headers: { "x-access-token": token },
+        // Include the token in the request
+      };
+      console.log("the token is:", config);
+
+      await axios.post(`http://localhost:4000/transactions/${transactionId}`, null, config);
+
+      console.log("Transaction Cancelled successfully!");
+
+      //   history.push("/success-page");
+    } catch (error) {
+      console.error("Error confirming transaction:", error);
+    }
+  };
   return (
     <div className="flex justify-center bg-gradient-to-r from-black to-red-800 min-h-screen">
       <div className="container mx-auto text-white flex flex-col items-center">
         <div className="text-center my-5">
           {" "}
-          <h1 className="text-2xl font-bold mb-2 ">Transaction History</h1>
-          <h2 className="">This is your list of transaction orders</h2>{" "}
+          <h1 className="text-2xl font-bold mb-2 ">Pending Transaction</h1>
+          <h2 className="">This is your list of transaction orders. Please confirm or cancel them before the timer runs out</h2>{" "}
         </div>
         {historyUser.map((history) => (
           <div className="p-4 grid grid-cols-4 gap-10 items-center m-4 border border-white">
@@ -86,7 +104,10 @@ const ConfirmTransaction = () => {
                       Confirm
                     </button>
                   </Link>
-                  <button className="bg-red-500 text-white py-2 px-4 mx-4 rounded w-full hover:bg-red-700 hover:text-white transition-colors duration-500 "> Cancel</button>
+                  <button onClick={() => handleCancellation(history.id)} className="bg-red-500 text-white py-2 px-4 mx-4 rounded w-full hover:bg-red-700 hover:text-white transition-colors duration-500 ">
+                    {" "}
+                    Cancel
+                  </button>
                 </div>
                 <div></div>
               </div>

@@ -126,9 +126,24 @@ export const confirmTransactions = async (req, res) => {
 };
 
 export const cancelTransactions = async (req, res) => {
-  const userId = req.userId;
+  const idofUser = req.userId;
   const transactionId = parseInt(req.params.id);
 
+  const checkTransactionId = await prisma.transactions.findUnique({
+    where: {
+      id: transactionId,
+    },
+  });
+  const checkUsers = await prisma.users.findUnique({
+    where: {
+      id: checkTransactionId.userId,
+    },
+  });
+  if (idofUser !== checkUsers.id) {
+    return res.status(401).send({
+      message: "Unauthorized!!",
+    });
+  }
   try {
     const cancelTransactions = await prisma.transactions.update({
       where: {
