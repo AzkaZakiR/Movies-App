@@ -1,14 +1,10 @@
+import { seatsObject } from "./Seats";
 export const showTimesdata = [
   {
     id: "1",
     date: "2023-06-15",
     seats: {
-      A1: true,
-      A2: false,
-      A3: true,
-      B1: false,
-      B2: false,
-      B3: true,
+      seatsObject,
     },
     studios: 1,
     startAt: "16:00",
