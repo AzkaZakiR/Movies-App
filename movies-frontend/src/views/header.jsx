@@ -8,6 +8,7 @@ import RegisterModal from "./user/Register";
 import useSWR, { useSWRConfig } from "swr";
 import jwt_decode from "jwt-decode";
 import axios from "axios";
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const HeaderTop = () => {
   const { mutate } = useSWRConfig();
@@ -53,7 +54,7 @@ const HeaderTop = () => {
       const token = localStorage.getItem("token");
       console.log("token: " + token);
       // const response = await axios.get(`http://localhost:4000/user/${userId}`, {
-      const response = await axios.get("http://localhost:4000/user", {
+      const response = await axios.get(`${apiUrl}/user`, {
         headers: {
           "x-access-token": token,
         },

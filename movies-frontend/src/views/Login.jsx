@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Modal from "react-modal";
 import "../css/login.css";
+const apiUrl = process.env.REACT_APP_API_URL;
 
 Modal.setAppElement("#root");
 
@@ -15,14 +16,15 @@ const Loginpage = (closeModal) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("http://localhost:4000/login", {
+      const response = await axios.post(`${apiUrl}/login`, {
         username: username,
         password: password,
       });
       const { accessToken } = response.data.data;
       localStorage.setItem("token", accessToken);
       //navigate("/home");
-      window.location.href = "/home";
+      // window.location.href = "/home";
+      window.location.reload();
 
       console.log("Successfully logged in", Response.data);
     } catch (error) {
@@ -44,7 +46,7 @@ const Loginpage = (closeModal) => {
   };
   return (
     <Modal isOpen={true} onRequestClose={closeModal}>
-      <div className="fixed inset-0 flex justify-center items-center bg-black bg-opacity-50">
+      <div className="z-100 fixed inset-0 flex justify-center items-center bg-black bg-opacity-50 z-0">
         <div className="modalContainer bg-white rounded shadow-lg p-8">
           <div className="titleCloseBtn flex justify-end">
             <h2 className="text-2xl font-bold mb-6">Login</h2>

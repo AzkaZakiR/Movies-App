@@ -1,22 +1,29 @@
 # Editor.md
 
 # How to Run
+
 - cd ke folder movies-frontend
+
+- ganti nama file .env.example menjadi .env saja
+
 - run command
 
 `$ npm install`
-- kemudian run command 
+
+- kemudian run command
 
 `$ npm start`
 
 - lakukan di folder satu lagi
-- cd ke folder Movies-App  
+- cd ke folder Movies-App
 - run command
 
 `$ npm install`
-- kemudian run command 
-`$ npx prisma generate`
+
+- kemudian run command
+  `$ npx prisma generate`
 
 `$ npx prisma db seed`
+
 - dan terakhir run command
-`$ npm start`
+  `$ npm start`

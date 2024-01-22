@@ -5,10 +5,12 @@ import { Link } from "react-router-dom";
 
 const MovieList = () => {
   const [movies, setMovies] = useState([]);
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   const fetchMovies = async () => {
     try {
-      const response = await axios.get("http://localhost:4000/movies");
+      // const response = await axios.get("http://localhost:4000/movies");
+      const response = await axios.get(`${apiUrl}/movies`);
       setMovies(response.data.response);
       return response.data;
     } catch (error) {
@@ -27,7 +29,7 @@ const MovieList = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 rounded  ">
           {movies.map((movie) => (
             <Link to={`/movies/${movie.id}`} key={movie.id}>
-              <div key={movie.id} className=" rounded hover:scale-110 transform transition-transform duration-300 ease-in-out hover:shadow-lg hover:shadow-slate-50 box-shadow: rgba(0, 0, 0, 0.25) 0px 25px 50px -12px; ">
+              <div key={movie.id} className=" rounded hover:scale-110 transition-transform duration-300 ease-in-out hover:shadow-lg">
                 <div className="aspect-w-2 aspect-h-3">
                   <img src={movie.poster} alt={movie.title} className="object-cover rounded-t " />
                 </div>

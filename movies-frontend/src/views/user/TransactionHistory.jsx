@@ -15,7 +15,9 @@ const TransactionHistory = () => {
           },
         };
         const history = await axios.get("http://localhost:4000/history", config);
-        setHistoryUser(history.data);
+        const transactionList = history.data.filter((transaction) => transaction.status !== "pending");
+        // setHistoryUser(history.data);
+        setHistoryUser(transactionList);
         console.log(history.data);
       } catch (error) {
         console.error("Error fetching movie schedule:", error);
@@ -51,8 +53,9 @@ const TransactionHistory = () => {
             <div className="col-span-2">
               <div className="flex flex-col items-center justify-center">
                 <div>
-                  <h1 className="text-xl">Date: {history.createdAt.slice(0, 10)}</h1>
-                  <h2 className="my-3">{history.status}</h2>
+                  <h1 className="text-xl">Date: {history.date}</h1>
+                  <h1 className="text-xl">Hour: {history.startAt}</h1>
+                  <h2 className="my-3">Status: {history.status}</h2>
                 </div>
               </div>
             </div>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const MovieDetail = () => {
   const { id } = useParams();
@@ -16,7 +17,7 @@ const MovieDetail = () => {
     // const month = movieSchedule.date.slice(0, 10);
     let tglBaru = "2023-" + temp[1] + "-" + temp[0];
     try {
-      const jadwal = await axios.post(`http://localhost:4000/jadwal/${id}`, {
+      const jadwal = await axios.post(`${apiUrl}/jadwal/${id}`, {
         date: tglBaru,
       });
       if (!jadwal) {
@@ -32,7 +33,7 @@ const MovieDetail = () => {
   useEffect(() => {
     const fetchMovieDetail = async () => {
       try {
-        const response = await axios.get(`http://localhost:4000/movies/${id}`);
+        const response = await axios.get(`${apiUrl}/movies/${id}`);
         setMovie(response.data);
       } catch (error) {
         console.log(error);
@@ -44,7 +45,7 @@ const MovieDetail = () => {
   useEffect(() => {
     const fetchMovieSchedule = async () => {
       try {
-        const jadwal = await axios.get(`http://localhost:4000/movies/date/${id}`);
+        const jadwal = await axios.get(`${apiUrl}/movies/date/${id}`);
         setMovieSchedule(jadwal.data.response);
       } catch (error) {
         console.error("Error fetching movie schedule:", error);

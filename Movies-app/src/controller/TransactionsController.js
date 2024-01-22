@@ -163,6 +163,8 @@ export const transactionHistory = async (req, res) => {
   const userId = req.userId;
   let filmId = [];
   let showId = [];
+  let showDate = [];
+  let showHour = [];
   let moviePoster = [];
   let movieTitle = [];
   try {
@@ -186,6 +188,8 @@ export const transactionHistory = async (req, res) => {
       });
 
       filmId.push(findId.movieId);
+      showDate.push(findId.date);
+      showHour.push(findId.startAt);
     }
     console.log(filmId);
     for (let i = 0; i < filmId.length; i++) {
@@ -204,6 +208,8 @@ export const transactionHistory = async (req, res) => {
     }
     for (let i = 0; i < history.length; i++) {
       history[i].title = movieTitle[i];
+      history[i].date = showDate[i];
+      history[i].startAt = showHour[i];
     }
     console.log(history);
     res.status(200).json(history);

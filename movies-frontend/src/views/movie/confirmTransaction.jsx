@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import jwt_decode from "jwt-decode";
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const ConfirmTransaction = () => {
   const [historyUser, setHistoryUser] = useState([]);
@@ -18,7 +19,8 @@ const ConfirmTransaction = () => {
             "x-access-token": token, // Include the token in the request headers
           },
         };
-        const history = await axios.get("http://localhost:4000/history", config);
+        // const history = await axios.get("http://localhost:4000/history", config);
+        const history = await axios.get(`${apiUrl}/history`, config);
         const pendingTransactions = history.data.filter((transaction) => transaction.status === "pending");
 
         setHistoryUser(pendingTransactions);
@@ -40,7 +42,7 @@ const ConfirmTransaction = () => {
       };
       console.log("the token is:", config);
 
-      await axios.post(`http://localhost:4000/transactions/confirm/${transactionId}`, null, config);
+      await axios.post(`${apiUrl}/transactions/confirm/${transactionId}`, null, config);
 
       console.log("Transaction confirmed successfully!");
 
@@ -58,7 +60,7 @@ const ConfirmTransaction = () => {
       };
       console.log("the token is:", config);
 
-      await axios.post(`http://localhost:4000/transactions/${transactionId}`, null, config);
+      await axios.post(`${apiUrl}/transactions/${transactionId}`, null, config);
 
       console.log("Transaction Cancelled successfully!");
 
@@ -95,8 +97,9 @@ const ConfirmTransaction = () => {
             <div className="col-span-2">
               <div className="flex flex-col items-center justify-center">
                 <div>
-                  <h1 className="text-xl">Date: {history.createdAt.slice(0, 10)}</h1>
-                  <h2 className="my-3">{history.status}</h2>
+                  <h1 className="text-xl">Date: {history.date}</h1>
+                  <h1 className="text-lg">Hour: {history.startAt}</h1>
+                  <h2 className="my-3">Status: {history.status}</h2>
                 </div>
                 <div className="flex m-5">
                   <Link>
