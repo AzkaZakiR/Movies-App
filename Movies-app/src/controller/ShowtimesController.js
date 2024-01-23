@@ -74,7 +74,16 @@ export const getShowtime = async (req, res) => {
         id: showtimeId,
       },
     });
-    res.status(200).json({ schedule });
+    const movies = await prisma.movies.findFirst({
+      where: {
+        id: schedule.movieId,
+      },
+    });
+    const combinedData = {
+      ...schedule,
+      ...movies,
+    };
+    res.status(200).json(combinedData);
   } catch (error) {
     res.status(400).json({ msg: error.message });
   }
