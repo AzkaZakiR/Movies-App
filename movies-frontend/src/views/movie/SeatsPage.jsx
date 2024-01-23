@@ -74,64 +74,93 @@ const SeatBookingPage = () => {
     return null;
   }
   return (
-    <div className="bg-gradient-to-r from-black to-red-800 min-h-screen">
-      <div className="container mx-auto px-4 py-8 text-white" style={{ height: "80vh", overflowY: "auto" }}>
-        <h1 className="text-2x1 font-bold mb-2">Selected seats: </h1>
-        <div className="flex flex-wrap">
-          {selectedSeats.map((seat) => (
-            <p key={seat} className="text-white m-1">
-              {seat}
+    <div style={{ background: "linear-gradient(to right, #000, #8b0000)", minHeight: "100vh" }}>
+      <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "10px", color: "#fff", height: "80vh", overflowY: "auto" }}>
+        <div>
+          <h1 style={{ fontSize: "2rem", fontWeight: "bold", marginBottom: "16px", display: "inline" }}>Selected seats: </h1>
+          {selectedSeats.map((seat, index) => (
+            <p key={seat} style={{ fontSize: "1rem", color: "#fff", margin: "4px", display: "inline-block" }}>
+              {index > 0 ? `, ${seat}` : seat}
             </p>
           ))}
         </div>
-        <div className="bg-gray-400 border border-black text-center my-4 rounded-b-lg">Screen</div>
-        {/* <div className="flex flex-wrap justify-center"> */}
-        <div className="grid  md:grid-cols-1 lg:grid-cols-4 xl:grid-cols-12 gap-1 my-6">
+        <div style={{ backgroundColor: "#ccc", border: "1px solid #000", textAlign: "center", margin: "16px 0 2.5cm", borderRadius: "0 0 10px 10px" }}>Screen</div>
+
+        {/* Seats Grid */}
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexWrap: "wrap", gap: "1px", margin: "16px 0" }}>
           {Object.keys(seatsData)
             .slice(0, 60)
             .map((seat) => (
               <div
                 key={seat}
-                className={`w-11 h-8 border border-gray-500 rounded-md flex items-center justify-center mr-2 mb-3 ${
-                  seatsData[seat] ? "bg-gray-500 cursor-not-allowed text-slate-400" : selectedSeats.includes(seat) ? "bg-blue-500 text-slate-50" : "bg-white hover:bg-slate-200 text-black cursor-pointer"
-                } ${seatsData[seat] ? "bg-gray-500" : ""}`}
+                style={{
+                  width: "calc(7.333% - 5px)", // Adjusted width and removed display: grid
+                  height: "60px",
+                  border: "2px solid #999",
+                  borderRadius: "8px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginRight: "8px",
+                  marginBottom: "6px", // Adjusted marginBottom to be consistent
+                  padding: "10px",
+                  backgroundColor: seatsData[seat] ? "#888" : selectedSeats.includes(seat) ? "#005bb5" : "#fff",
+                  color: seatsData[seat] ? "#606c7a" : selectedSeats.includes(seat) ? "#fff" : "#000",
+                  cursor: seatsData[seat] ? "not-allowed" : "pointer",
+                }}
                 onClick={() => handleSeatSelection(seat)}
               >
                 {seat}
               </div>
             ))}
         </div>
-        <div className="flex justify-center items-center ">
+
+        {/* Additional Information */}
+        <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
           {Object.keys(seatsData)
             .slice(-4)
             .map((seat) => (
               <div
                 key={seat}
-                className={`w-11 h-8 border border-gray-500 rounded-md flex items-center justify-center mx-5 mb-3 ${
-                  seatsData[seat] ? "bg-gray-500 cursor-not-allowed text-slate-400" : selectedSeats.includes(seat) ? "bg-blue-500 text-slate-50" : "bg-white hover:bg-slate-200 text-black cursor-pointer"
-                } ${seatsData[seat] ? "bg-gray-500" : ""}`}
+                style={{
+                  width: "8.333%",
+                  height: "40px",
+                  border: "1px solid #999",
+                  borderRadius: "4px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginRight: "2px", // Reduced marginRight
+                  marginBottom: "2px", // Reduced marginBottom
+                  backgroundColor: seatsData[seat] ? "#888" : selectedSeats.includes(seat) ? "#005bb5" : "#fff",
+                  color: seatsData[seat] ? "#606c7a" : selectedSeats.includes(seat) ? "#fff" : "#000",
+                  cursor: seatsData[seat] ? "not-allowed" : "pointer",
+                }}
                 onClick={() => handleSeatSelection(seat)}
               >
                 {seat}
               </div>
             ))}
         </div>
-        <div className="my-4 flex ml-10">
-          {/* <div ="columns-10"> */}
-          <div className="m-4 flex items-center">
-            <div className="box-border border border-gray-500 h-8 w-8 p-4 bg-blue-500"></div>
-            <h1 className="ml-2">Selected Seats</h1>
+
+        {/* Legend */}
+        <div style={{ margin: "16px 0", display: "flex", marginLeft: "10px" }}>
+          <div style={{ margin: "4px", display: "flex", alignItems: "center" }}>
+            <div style={{ border: "1px solid #999", height: "40px", width: "40px", padding: "16px", backgroundColor: "#005bb5" }}></div>
+            <h1 style={{ marginLeft: "8px" }}>Selected Seats</h1>
           </div>
-          <div className="m-4 flex items-center">
-            <div className="box-border border border-gray-500 h-8 w-8 p-4 bg-white"></div>
-            <h1 className="ml-2">Available Seats</h1>
+          <div style={{ margin: "4px", display: "flex", alignItems: "center" }}>
+            <div style={{ border: "1px solid #999", height: "40px", width: "40px", padding: "16px", backgroundColor: "#fff" }}></div>
+            <h1 style={{ marginLeft: "8px" }}>Available Seats</h1>
           </div>
-          <div className="m-4 flex items-center">
-            <div className="box-border border border-slate-100 h-8 w-8 p-4 bg-gray-500"></div>
-            <h1 className="ml-2">Unavailable </h1>
+          <div style={{ margin: "4px", display: "flex", alignItems: "center" }}>
+            <div style={{ border: "1px solid #999", height: "40px", width: "40px", padding: "16px", backgroundColor: "#888" }}></div>
+            <h1 style={{ marginLeft: "8px" }}>Unavailable</h1>
           </div>
         </div>
-        <button className="bg-red-700 text-white py-2 px-4 my-4 rounded w-full hover:bg-red-500 hover:text-white transition-colors duration-700 " onClick={BuyTicket}>
+
+        {/* Buy Ticket Button */}
+        <button style={{ width: "100%", backgroundColor: "#8b0000", color: "#fff", padding: "8px 16px", margin: "16px 0", border: "none", borderRadius: "4px", cursor: "pointer", transition: "background-color 0.7s" }} onClick={BuyTicket}>
           Buy Ticket
         </button>
       </div>
