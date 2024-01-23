@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 const SeatBookingPage = () => {
   const { id } = useParams();
   let [selectedSeats, setSelectedSeats] = useState([]);
+  let [movieDetail, setmovieDetail] = useState([]);
   const [seatsData, setSeatsData] = useState([]);
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
@@ -16,7 +17,9 @@ const SeatBookingPage = () => {
       try {
         // Fetch seat data from the API
         const response = await axios.get(`http://localhost:4000/booking/date/${id}/`);
-        setSeatsData(response.data.schedule.seats);
+        setSeatsData(response.data.seats);
+        setmovieDetail(response.data);
+        console.log("movie data:", movieDetail);
       } catch (error) {
         console.log(error);
       }
@@ -70,21 +73,25 @@ const SeatBookingPage = () => {
   };
 
   if (!token) {
-    navigate("/home");
+    navigate("/login");
     return null;
   }
   return (
     <div style={{ background: "linear-gradient(to right, #000, #8b0000)", minHeight: "100vh" }}>
-      <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "10px", color: "#fff", height: "80vh", overflowY: "auto" }}>
+      <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "10px", color: "#fff", overflowY: "auto" }}>
         <div>
-          <h1 style={{ fontSize: "2rem", fontWeight: "bold", marginBottom: "16px", display: "inline" }}>Selected seats: </h1>
+          <h1 style={{ fontSize: "2rem", fontWeight: "bold", marginBottom: "16px" }}>{movieDetail.title} </h1>
+          <h1 style={{ fontSize: "1.5rem", fontWeight: "bold", marginBottom: "16px", display: "inline" }}>{movieDetail.date}, </h1>
+          <h1 style={{ fontSize: "1.5rem", fontWeight: "bold", marginBottom: "16px", display: "inline" }}>{movieDetail.startAt} </h1>
+          <h1 style={{ fontSize: "1.5rem", fontWeight: "bold", marginBottom: "16px" }}></h1>
+          <h1 style={{ fontSize: "1.5rem", fontWeight: "bold", marginBottom: "16px", display: "inline" }}>Selected seats: </h1>
           {selectedSeats.map((seat, index) => (
-            <p key={seat} style={{ fontSize: "1rem", color: "#fff", margin: "4px", display: "inline-block" }}>
+            <p key={seat} style={{ fontSize: "1rem", color: "#fff", margin: "4px", display: "inline" }}>
               {index > 0 ? `, ${seat}` : seat}
             </p>
           ))}
         </div>
-        <div style={{ backgroundColor: "#ccc", border: "1px solid #000", textAlign: "center", margin: "16px 0 2.5cm", borderRadius: "0 0 10px 10px" }}>Screen</div>
+        <div style={{fontSize: "1.5rem", backgroundColor: "#ccc", border: "1px solid #000", textAlign: "center", margin: "16px 0 2.5cm", borderRadius: "0 0 10px 10px" }}> <h1>Screen </h1> </div>
 
         {/* Seats Grid */}
         <div style={{ display: "flex", justifyContent: "center", alignItems: "center", flexWrap: "wrap", gap: "1px", margin: "16px 0" }}>
@@ -94,14 +101,14 @@ const SeatBookingPage = () => {
               <div
                 key={seat}
                 style={{
-                  width: "calc(7.333% - 5px)", // Adjusted width and removed display: grid
+                  width: "calc(8.666% - 15px)", // Adjusted width and removed display: grid
                   height: "60px",
                   border: "2px solid #999",
                   borderRadius: "8px",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
-                  marginRight: "8px",
+                  marginRight: "7px",
                   marginBottom: "6px", // Adjusted marginBottom to be consistent
                   padding: "10px",
                   backgroundColor: seatsData[seat] ? "#888" : selectedSeats.includes(seat) ? "#005bb5" : "#fff",
