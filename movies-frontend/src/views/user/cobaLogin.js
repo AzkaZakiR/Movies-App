@@ -17,6 +17,8 @@ function Modal({ closeModal, openRegister }) {
       });
       const { accessToken } = response.data.data;
       localStorage.setItem("token", accessToken);
+
+      window.location.reload();
       console.log("Successfully logged in", Response.data);
       closeModal(false);
     } catch (error) {
