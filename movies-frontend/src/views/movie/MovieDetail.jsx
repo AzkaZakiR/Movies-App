@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
+import { useFlash } from "../../FlashContext";
 import axios from "axios";
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -10,6 +11,7 @@ const MovieDetail = () => {
   const [selectedSchedule, setSelectedSchedule] = useState([]);
   const [dates, setDates] = useState(["2023-06-15", "2023-06-16", "2023-06-17", "2023-06-18", "2023-06-19", "2023-06-20", "2023-06-21"]);
   const [selectedDate, setSelectedDate] = useState(dates[0]);
+  const { setFlash } = useFlash();
 
   const handleDateClick = async (date) => {
     setSelectedDate(date);
@@ -72,6 +74,21 @@ const MovieDetail = () => {
     const month = String(date.getMonth()).padStart(2, "0");
     const day = String(date.getDate()).padStart(2, "0");
     return `${day}-${month}`;
+  };
+
+  const handleScheduleLinkClick = (schedule) => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      console.log("User not logged in. Setting flash message.");
+      setFlash("You need to log in first.");
+      // Optionally, redirect to the login page
+      // history.push('/login');
+    } else {
+      // Continue with your logic to navigate or perform actions for authenticated user
+      // For now, you can redirect to the specific schedule
+      // history.push(`/movies/shows/${schedule.id}`);
+    }
   };
 
   return (
@@ -156,8 +173,14 @@ const MovieDetail = () => {
               {/* ... */}
               {selectedSchedule.map((schedule) => (
                 <Link to={`/movies/shows/${schedule.id}`} key={schedule.id}>
-                  <div key={schedule.id} className="font-medium block rounded-lg focus:outline-none focus:ring  border border-white  text-white p-2 hover:bg-white hover:text-black anim transition-colors duration-500">
-                    <p>{schedule.startAt}</p>
+                  <div
+                    disabled={!localStorage.getItem("token")}
+                    key={schedule.id}
+                    className="font-medium block rounded-lg focus:outline-none focus:ring  border border-white  text-white p-2 hover:bg-white hover:text-black anim transition-colors duration-500"
+                  >
+                    <p onClick={() => handleScheduleLinkClick(schedule)} disabled={!localStorage.getItem("token")}>
+                      {schedule.startAt}
+                    </p>
                   </div>
                 </Link>
               ))}

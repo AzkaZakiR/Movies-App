@@ -11,6 +11,7 @@ import SeatBookingPage from "./views/movie/SeatsPage";
 import TransactionHistory from "./views/user/TransactionHistory";
 import DetailProfile from "./views/user/profile";
 import ConfirmTransaction from "./views/movie/confirmTransaction";
+import { FlashProvider } from "./FlashContext";
 import { Navigate } from "react-router-dom";
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
       <HeaderTop />
       <BrowserRouter>
         <Routes>
+        <Route path="/" element={<MovieList />} /> {/* Update this line */}
           <Route path="/register" Component={RegisterForm} />
           <Route path="/login" Component={Loginpage} />
           <Route path="/home" Component={MovieList} />

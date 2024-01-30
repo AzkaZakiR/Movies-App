@@ -46,6 +46,8 @@ const ConfirmTransaction = () => {
 
       console.log("Transaction confirmed successfully!");
 
+      setHistoryUser((prevHistory) => prevHistory.filter((transaction) => transaction.id !== transactionId));
+
       //   history.push("/success-page");
     } catch (error) {
       console.error("Error confirming transaction:", error);

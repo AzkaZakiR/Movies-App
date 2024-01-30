@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import axios from "axios";
 import useSWR, { useSWRConfig } from "swr";
 import jwt_decode from "jwt-decode";
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const DetailProfile = () => {
   const { id } = useParams();
@@ -17,7 +18,7 @@ const DetailProfile = () => {
     const fetchUserDetail = async () => {
       const token = localStorage.getItem("token");
       try {
-        const response = await axios.get(`http://localhost:4000/user`, {
+        const response = await axios.get(`${apiUrl}/user`, {
           headers: {
             "x-access-token": token,
           },
@@ -36,7 +37,7 @@ const DetailProfile = () => {
       const token = localStorage.getItem("token");
 
       const response = await axios.put(
-        "http://localhost:4000/user/topup",
+        `${apiUrl}/user/topup`,
         {
           moneyAmount: balance,
         },
@@ -59,7 +60,7 @@ const DetailProfile = () => {
       const token = localStorage.getItem("token");
 
       const response = await axios.put(
-        "http://localhost:4000/user/withdraw",
+        `${apiUrl}/user/withdraw`,
         {
           moneyAmount: withdraw,
         },

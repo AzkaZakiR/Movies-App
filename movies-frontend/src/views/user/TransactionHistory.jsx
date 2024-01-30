@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+const apiUrl = process.env.REACT_APP_API_URL;
 
 const TransactionHistory = () => {
   const [historyUser, setHistoryUser] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -14,17 +16,24 @@ const TransactionHistory = () => {
             "x-access-token": token, // Include the token in the request headers
           },
         };
-        const history = await axios.get("http://localhost:4000/history", config);
+        const history = await axios.get(`${apiUrl}/history`, config);
         const transactionList = history.data.filter((transaction) => transaction.status !== "pending");
         // setHistoryUser(history.data);
         setHistoryUser(transactionList);
+        setLoading(false);
         console.log(history.data);
       } catch (error) {
         console.error("Error fetching movie schedule:", error);
+        setLoading(false);
       }
     };
     fetchHistory();
   }, []);
+
+  if (loading) {
+    return <h2>Loading....</h2>;
+  }
+  console.log("THe status of loading", loading);
   return (
     <div className="flex justify-center bg-gradient-to-r from-black to-red-800 min-h-screen">
       <div className="container mx-auto text-white flex flex-col items-center">
