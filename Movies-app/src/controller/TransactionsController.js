@@ -139,11 +139,27 @@ export const cancelTransactions = async (req, res) => {
       id: checkTransactionId.userId,
     },
   });
+  const checkShowtime = await prisma.showtimes.findUnique({
+    where:{
+      id: checkTransactionId.showTimeId,
+    }
+  })
+
+  let updatedSeats = JSON.parse(checkTransactionId.booked_seat); 
+  Object.keys(updatedSeats).forEach((key) => {
+    updatedSeats[key] = false;
+  }); 
+
+  const newSeats = {
+    ...checkShowtime.seats,
+    ...updatedSeats,
+  }
   if (idofUser !== checkUsers.id) {
     return res.status(401).send({
       message: "Unauthorized!!",
     });
   }
+
   try {
     const cancelTransactions = await prisma.transactions.update({
       where: {
@@ -152,6 +168,14 @@ export const cancelTransactions = async (req, res) => {
       data: {
         status: "canceled",
       },
+    });
+    const updateSeats = await prisma.showtimes.update({
+      where:{
+        id: checkTransactionId.showTimeId
+      },
+      data:{
+        seats: newSeats
+      }
     });
     res.status(200).json(cancelTransactions);
   } catch (error) {
