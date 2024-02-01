@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -9,6 +9,8 @@ const ConfirmTransaction = () => {
   const token = localStorage.getItem("token");
   const decodedToken = jwt_decode(token);
   const userId = decodedToken.id;
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -22,7 +24,7 @@ const ConfirmTransaction = () => {
         // const history = await axios.get("http://localhost:4000/history", config);
         const history = await axios.get(`${apiUrl}/history`, config);
         const pendingTransactions = history.data.filter((transaction) => transaction.status === "pending");
-
+        const updatedHistoryUser = history.data.filter((transaction) => transaction.status === "pending");;
         setHistoryUser(pendingTransactions);
         console.log("The data");
         console.log(pendingTransactions);
@@ -33,7 +35,7 @@ const ConfirmTransaction = () => {
     fetchHistory();
   }, []);
 
-  const handleConfirmation = async (transactionId) => {
+  const handleConfirmation = async (transactionId, navigate) => {
     try {
       const token = localStorage.getItem("token");
       const config = {
@@ -48,13 +50,17 @@ const ConfirmTransaction = () => {
 
       setHistoryUser((prevHistory) => prevHistory.filter((transaction) => transaction.id !== transactionId));
 
+      navigate();
+
       //   history.push("/success-page");
     } catch (error) {
       console.error("Error confirming transaction:", error);
     }
   };
-  const handleCancellation = async (transactionId) => {
+  const handleCancellation = async (transactionId, navigate) => {
     try {
+      
+      
       const token = localStorage.getItem("token");
       const config = {
         headers: { "x-access-token": token },
@@ -64,9 +70,14 @@ const ConfirmTransaction = () => {
 
       await axios.post(`${apiUrl}/transactions/${transactionId}`, null, config);
 
-      console.log("Transaction Cancelled successfully!");
+      const response = await axios.get(`${apiUrl}/transactions`);
+      const updatedHistoryUser = response.data;
 
-      //   history.push("/success-page");
+      // Update state with updated history
+      setHistoryUser(updatedHistoryUser);
+
+      navigate();
+      console.log("Transaction Cancelled successfully!");
     } catch (error) {
       console.error("Error confirming transaction:", error);
     }
@@ -103,13 +114,13 @@ const ConfirmTransaction = () => {
                   <h1 className="text-lg">Hour: {history.startAt}</h1>
                   <h2 className="my-3">Status: {history.status}</h2>
                 </div>
-                <div className="flex m-5">
+                <div className="flex ">
                   <Link>
-                    <button onClick={() => handleConfirmation(history.id)} className="bg-green-500 text-white py-2 px-4 mx-4 rounded w-full hover:bg-green-700 hover:text-white transition-colors duration-500 ">
+                    <button onClick={() => handleConfirmation(history.id)} className="bg-green-500 text-white py-2 px-4 my-4 rounded w-full hover:bg-green-700 hover:text-white transition-colors duration-500 ">
                       Confirm
                     </button>
                   </Link>
-                  <button onClick={() => handleCancellation(history.id)} className="bg-red-500 text-white py-2 px-4 mx-4 rounded w-full hover:bg-red-700 hover:text-white transition-colors duration-500 ">
+                  <button onClick={() => handleCancellation(history.id, navigate)} className="bg-red-500 text-white py-2 px-4 m-4 rounded w-full hover:bg-red-700 hover:text-white transition-colors duration-500 ">
                     {" "}
                     Cancel
                   </button>

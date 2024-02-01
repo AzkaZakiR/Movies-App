@@ -8,6 +8,7 @@ const SeatBookingPage = () => {
   let [selectedSeats, setSelectedSeats] = useState([]);
   let [movieDetail, setmovieDetail] = useState([]);
   const [seatsData, setSeatsData] = useState([]);
+  const [priceData, sePriceData] = useState();
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
   const MAX_SEAT_SELECTION = 6;
@@ -45,7 +46,15 @@ const SeatBookingPage = () => {
         setSelectedSeats((prevSelectedSeats) => [...prevSelectedSeats, seat]);
       }
     }
+    handleTotalPrice();
   };
+
+  const handleTotalPrice = () =>{
+    let seatsLength = selectedSeats.length;
+    console.log(`totalPrice ${priceData} length {seats}`);
+    let seatsPrice = movieDetail.price * (selectedSeats.length + 1);
+    sePriceData(seatsPrice);
+  }
 
   const BuyTicket = async () => {
     let bookedseat = {};
@@ -63,7 +72,7 @@ const SeatBookingPage = () => {
           headers: {
             "x-access-token": token,
           },
-        }
+        }           
       );
       navigate("/home");
       console.log(buy.data);
@@ -90,6 +99,7 @@ const SeatBookingPage = () => {
               {index > 0 ? `, ${seat}` : seat}
             </p>
           ))}
+          <h1>{priceData}</h1>
         </div>
         <div style={{fontSize: "1.5rem", backgroundColor: "#ccc", border: "1px solid #000", textAlign: "center", margin: "16px 0 2.5cm", borderRadius: "0 0 10px 10px" }}> <h1>Screen </h1> </div>
 
