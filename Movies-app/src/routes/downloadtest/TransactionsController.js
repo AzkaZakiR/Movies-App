@@ -1,9 +1,5 @@
 import { PrismaClient } from "@prisma/client";
 import { v4 as uuidv4 } from "uuid";
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
-import path from 'path';
-import puppeteer from 'puppeteer';
 
 const prisma = new PrismaClient();
 
@@ -248,13 +244,8 @@ export const transactionHistory = async (req, res) => {
 };
 
 export const downloadTicket = async (req, res) => {
-  const currentFileUrl = import.meta.url;
-  const currentFilePath = fileURLToPath(currentFileUrl);
-  const currentDir = dirname(currentFilePath);
-
-  const filePath = path.join(currentDir, 'download', 'index.css');
-  const fileName = 'index.css';
-  console.log(currentDir, "curreft file", currentFileUrl, "current file path" ,currentFilePath);
+  const filePath = "/download/index.css";
+  const fileName = "index.css";
 
   res.download(filePath, fileName, (err) => {
     if (err) {
@@ -266,127 +257,7 @@ export const downloadTicket = async (req, res) => {
   });
 }
 
-export const generatePdf = async (req, res) => {
-  const userId = req.userId;
-  let transactionId = req.params.id;
-  transactionId = parseInt(req.params.id, 10); // Convert the string to an integer
 
-  try {
-    const transactionData = await prisma.transactions.findUnique({
-      where: {
-        id: transactionId,
-      }
-    })
-    const showtimeData = await prisma.showtimes.findUnique({
-      where: {
-        id: transactionData.showTimeId,
-      }
-    })
-    const movieData = await prisma.movies.findUnique({
-      where: {
-        id: showtimeData.movieId,
-      }
-    })
-    
-  if (!transactionData) {
-    // Handle the case where the transaction is not found
-    return res.status(404).json({ error: 'Transaction not found' });
-  }
-    const ticketData = await prisma.ticket.findMany({
-      where: {
-        transactionsId: transactionData.id,
-      }
-    })
-    console.log("transaction daat", transactionData);
-    console.log("ticket data", ticketData);
-    const browser = await puppeteer.launch();
-    const page = await browser.newPage();
-    
-    const totalCostFormatted = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(transactionData.totalcost);
-    const bookedSeatsObject = JSON.parse(transactionData.booked_seat);
-    const bookedSeats = Object.keys(bookedSeatsObject);
-    // Set the HTML content to be converted to PDF
-    const htmlContent = `
-    <html>
-    <head>
-      <title>Generated Ticket</title>
-      <style>
-        body {
-          font-family: 'Arial', sans-serif;
-          background-color: #f0f0f0;
-          margin: 0;
-          padding: 20px;
-          text-align: center;
-        }
-  
-        h1 {
-          margin-bottom: 10px;
-          color: #333;
-        }
-  
-        .ticket {
-          background-color: #fff;
-          padding: 20px;
-          border-radius: 10px;
-          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-          display: inline-block;
-        }
-  
-        .ticket-info {
-          margin-top: 20px;
-        }
-  
-        .total-cost {
-          color: #e44d26; /* Orange color for emphasis */
-        }
-  
-        .movie-title {
-          color: #007acc; /* Blue color for emphasis */
-        }
-  
-        .booked-seats {
-          font-weight: bold;
-        }
-  
-        .ticket-code {
-          color: #555;
-        }
-      </style>
-    </head>
-    <body>
-      <div class="ticket">
-        <h1>Hello, this is your ticket!</h1>
-        <div class="ticket-info">
-          <p class="total-cost">Total: ${totalCostFormatted}</p>
-          <p class="movie-title">Movie: ${movieData.title}</p>
-          <p class="booked-seats">Seats: ${bookedSeats.join(', ')}</p>
-          <p class="ticket-code">Ticket Code: ${ticketData[0].ticketCode}</p>
-        </div>
-      </div>
-    </body>
-  </html>
-    `;
-  
-    // Set the HTML content on the Puppeteer page
-    await page.setContent(htmlContent);
-  
-    // Generate PDF
-    const pdfBuffer = await page.pdf();
-  
-    // Close the Puppeteer browser
-    await browser.close();
-    const filename = `${ticketData[0].ticketCode}.pdf`;
-
-    // Send the generated PDF as a response
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition',  `attachment; filename=${filename}`);
-    res.send(pdfBuffer);   
-  } catch (error) {
-    res.status(500).json({ msg: error });
-    console.log(error);
-  }
- 
-}
 // export const createTransactions = async(req, res) => {
 //     res.status(200).send("API JALAN")
 // }

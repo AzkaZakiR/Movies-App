@@ -29,7 +29,27 @@ const TransactionHistory = () => {
     };
     fetchHistory();
   }, []);
+  const handlePrintTicket = async (transactionId) => {
+    // Implement logic to print the ticket based on the transaction details
+    try{
+      const response = await axios.get(`${apiUrl}/generateticket/${transactionId}`, {
+        responseType: 'arraybuffer', // Specify the response type as arraybuffer
+      });
+  
+      // Convert the array buffer to a Blob
+      const blob = new Blob([response.data], { type: 'application/pdf' });
+  
+      // Create a data URL representing the Blob
+      const dataUrl = URL.createObjectURL(blob);
+  
+      // Open the PDF in a new tab or window
+      window.open(dataUrl, '_blank');
+    } catch (error) {
+      console.log(error);
 
+    }
+    console.log("Printing ticket for transaction:", transactionId);
+  };
   if (loading) {
     return <h2>Loading....</h2>;
   }
@@ -65,6 +85,14 @@ const TransactionHistory = () => {
                   <h1 className="text-xl">Date: {history.date}</h1>
                   <h1 className="text-xl">Hour: {history.startAt}</h1>
                   <h2 className="my-3">Status: {history.status}</h2>
+                  {history.status === "success" && (
+                    <button
+                      className="bg-green-500 text-white px-4 py-2 rounded transition-colors duration-300 hover:bg-green-600"
+                      onClick={() => handlePrintTicket(history.id)} 
+                    >
+                      Print Ticket
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
